@@ -1,9 +1,11 @@
-/* eslint-disable no-undef */
 import { LitElement, html } from 'lit';
 import { customElement, property } from 'lit/decorators.js';
+import { style } from '../../style.js';
 
 @customElement('main-element')
-export class Main extends LitElement {
+export class WeatherMain extends LitElement {
+  static styles = style;
+
   @property()
   temperature: number = 0;
 
@@ -15,12 +17,6 @@ export class Main extends LitElement {
 
   @property()
   date: number = 0;
-
-  static get properties() {
-    return {
-      data: Object,
-    };
-  }
 
   //   async connectedCallback(): Promise<void> {
   //     // eslint-disable-next-line wc/guard-super-call
@@ -65,32 +61,32 @@ export class Main extends LitElement {
       console.log('erro ao fazer a chamada à API');
     }
 
-    const currentDate = new Date();
-    const tomorrowDate = new Date(
-      currentDate.setDate(currentDate.getDate() + 1)
-    );
-    const dayAfterTomorrowDate = new Date(
-      currentDate.setDate(currentDate.getDate() + 2)
-    );
+    // const currentDate = new Date();
+    // const tomorrowDate = new Date(
+    //   currentDate.setDate(currentDate.getDate() + 1)
+    // );
+    // const dayAfterTomorrowDate = new Date(
+    //   currentDate.setDate(currentDate.getDate() + 2)
+    // );
 
-    data.array.forEach(item => {
-      const itemDate = new Date(item.date);
-      if (itemDate.toDateString() === currentDate.toDateString()) {
-        // this.temperature=item.temp;
-        // this.weatherDescription=item.weatherDescription;
-        // this.weatherIconUrl=item.weatherIconUrl;
-        // this.date=item.date;
-        console.log(`Data atual: ${item.date}`);
-      } else if (itemDate.toDateString() === tomorrowDate.toDateString()) {
-        // Item corresponde à data de amanhã
-        console.log(`Data de amanhã: ${item.date}`);
-      } else if (
-        itemDate.toDateString() === dayAfterTomorrowDate.toDateString()
-      ) {
-        // Item corresponde à data após amanhã
-        console.log(`Data após amanhã: ${item.date}`);
-      }
-    });
+    // data.array.forEach(item => {
+    //   const itemDate = new Date(item.date);
+    //   if (itemDate.toDateString() === currentDate.toDateString()) {
+    //     // this.temperature=item.temp;
+    //     // this.weatherDescription=item.weatherDescription;
+    //     // this.weatherIconUrl=item.weatherIconUrl;
+    //     // this.date=item.date;
+    //     console.log(`Data atual: ${item.date}`);
+    //   } else if (itemDate.toDateString() === tomorrowDate.toDateString()) {
+    //     // Item corresponde à data de amanhã
+    //     console.log(`Data de amanhã: ${item.date}`);
+    //   } else if (
+    //     itemDate.toDateString() === dayAfterTomorrowDate.toDateString()
+    //   ) {
+    //     // Item corresponde à data após amanhã
+    //     console.log(`Data após amanhã: ${item.date}`);
+    //   }
+    // });
   }
 
   render() {
