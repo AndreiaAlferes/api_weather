@@ -2,9 +2,9 @@ import { css } from 'lit';
 
 export const style = [
   css`
-    :host {
+    :body {
       /* colors */
-      background-color: #0066b1;
+      background-color: purple;
     }
   `,
 ];
