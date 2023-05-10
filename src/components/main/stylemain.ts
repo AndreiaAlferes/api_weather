@@ -2,10 +2,27 @@ import { css } from 'lit';
 
 export const style = [
   css`
-    .main {
-      background-image: url(../../assets/clouds.webp);
-      background-repeat: no-repeat;
-      background-size: cover;
+    :host {
+      display: block;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+      text-align: center;
+    }
+
+    h1 {
+      margin-top: 20px;
+    }
+
+    .list-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .list-item {
+      width: 100%;
+      padding: 10px;
+      margin: 10px;
+      background-color: #f2f2f2;
     }
   `,
 ];

@@ -45,37 +45,6 @@ export class WeatherMain extends LitElement {
       d322: '../../assets/d322.png',
       d422: '../../assets/d422.png',
       d432: '../../assets/d432.png',
-      n000: '../../assets/n000.png',
-      n100: '../../assets/n100.png',
-      n200: '../../assets/n200.png',
-      n300: '../../assets/n300.png',
-      n400: '../../assets/n400.png',
-      n500: '../../assets/n500.png',
-      n600: '../../assets/n600.png',
-      n210: '../../assets/n210.png',
-      n310: '../../assets/n310.png',
-      n410: '../../assets/n410.png',
-      n220: '../../assets/n220.png',
-      n320: '../../assets/n320.png',
-      n420: '../../assets/n420.png',
-      n430: '../../assets/n430.png',
-      n240: '../../assets/n240.png',
-      n340: '../../assets/n340.png',
-      n440: '../../assets/n440.png',
-      n211: '../../assets/n211.png',
-      n311: '../../assets/n311.png',
-      n411: '../../assets/n411.png',
-      n221: '../../assets/n221.png',
-      n321: '../../assets/n321.png',
-      n421: '../../assets/n421.png',
-      n431: '../../assets/n431.png',
-      n212: '../../assets/n212.png',
-      n312: '../../assets/n312.png',
-      n412: '../../assets/n412.png',
-      n222: '../../assets/n222.png',
-      n322: '../../assets/n322.png',
-      n422: '../../assets/n422.png',
-      n432: '../../assets/n432.png',
     },
   ];
 
@@ -106,29 +75,40 @@ export class WeatherMain extends LitElement {
   }
 
   render() {
+    // eslint-disable-next-line arrow-body-style
+    const calculateAvgTemp = (previsaoItem: previsao): number => {
+      return (previsaoItem.minTemp + previsaoItem.maxTemp) / 2;
+    };
     return html`
       <div class="main">
-        <h1>Previsões do Tempo</h1>
-        <ul>
-          ${this.previsoesArray.map(
-            previsaoItem => html`
-              <li>
-                <p>Data: ${previsaoItem.date}</p>
-                <p>Mínima: ${previsaoItem.minTemp}ºC</p>
-                <p>Máxima: ${previsaoItem.maxTemp}ºC</p>
-                <p>Velocidade Máxima do Vento: ${previsaoItem.maxWindSpeed}</p>
-                <p>Acumulação de Precipitação: ${previsaoItem.precipAccum}</p>
-                <p>
-                  symbol:
-                  <img
-                    src="${this.symbols[0][previsaoItem.symbol]}"
-                    alt="Weather Symbol"
-                  />
-                </p>
-              </li>
-            `
-          )}
-        </ul>
+        <h1>TEMPERATURA EM LISBOA</h1>
+        <div class="list-container">
+          <ul>
+            ${this.previsoesArray.map(
+              (previsaoItem, index) => html`
+                <div
+                  class="list-item ${index === 0 ? 'highlight' : ''} ${index > 0
+                    ? 'align-inline'
+                    : ''}"
+                >
+                  <p>${previsaoItem.date}</p>
+                  <p>
+                    <img
+                      src="${this.symbols[0][previsaoItem.symbol]}"
+                      alt="Weather Symbol"
+                    />
+                  </p>
+                  <p>
+                    Average Temp: ${calculateAvgTemp(previsaoItem).toFixed(1)}ºC
+                  </p>
+                  <p>
+                    Temp: ${previsaoItem.minTemp}ºC - ${previsaoItem.maxTemp}ºC
+                  </p>
+                </div>
+              `
+            )}
+          </ul>
+        </div>
       </div>
     `;
   }

@@ -7,9 +7,9 @@ export const style = [
       left: 0;
       bottom: 0;
       width: 100%;
-      background-color: #fff0f5;
       color: black;
       text-align: center;
+      padding: 10px;
     }
 
     .container {
@@ -19,7 +19,7 @@ export const style = [
     }
 
     .p {
-      font-family: 'Exo', sans-serif;
+      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
       font-size: 20%;
       font-weight: 300;
     }
