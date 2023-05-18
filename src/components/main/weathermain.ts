@@ -75,10 +75,11 @@ export class WeatherMain extends LitElement {
   }
 
   render() {
-    // eslint-disable-next-line arrow-body-style
-    const calculateAvgTemp = (previsaoItem: previsao): number => {
-      return (previsaoItem.minTemp + previsaoItem.maxTemp) / 2;
-    };
+    // // eslint-disable-next-line arrow-body-style
+    // const calculateAvgTemp = (previsaoItem: previsao): number => {
+    //   return (previsaoItem.minTemp + previsaoItem.maxTemp) / 2;
+    // };
+
     return html`
       <div class="main">
         <h1>TEMPERATURA EM LISBOA</h1>
@@ -87,9 +88,9 @@ export class WeatherMain extends LitElement {
             ${this.previsoesArray.map(
               (previsaoItem, index) => html`
                 <div
-                  class="list-item ${index === 0 ? 'highlight' : ''} ${index > 0
-                    ? 'align-inline'
-                    : ''}"
+                  class="list-item ${index === 0
+                    ? 'highlight'
+                    : 'align-inline'}"
                 >
                   <p>${previsaoItem.date}</p>
                   <p>
@@ -98,12 +99,11 @@ export class WeatherMain extends LitElement {
                       alt="Weather Symbol"
                     />
                   </p>
-                  <p>
-                    Average Temp: ${calculateAvgTemp(previsaoItem).toFixed(1)}ºC
-                  </p>
+
                   <p>
                     Temp: ${previsaoItem.minTemp}ºC - ${previsaoItem.maxTemp}ºC
                   </p>
+                  <p></p>
                 </div>
               `
             )}

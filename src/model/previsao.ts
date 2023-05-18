@@ -1,4 +1,4 @@
-export interface previsao extends HTMLElement {
+export interface previsao {
   date: string;
   maxTemp: number;
   minTemp: number;
