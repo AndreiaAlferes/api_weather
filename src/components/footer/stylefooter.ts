@@ -19,9 +19,9 @@ export const style = [
       justify-content: center;
     }
 
-    .p {
-      font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-      font-size: 20%;
+    p {
+      font-family: 'Roboto Mono', monospace;
+      font-size: 1, 5rem;
       font-weight: 300;
     }
 

@@ -3,6 +3,12 @@ import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { style } from '../main/stylemain.js';
 import { previsao } from '../../model/previsao.js';
+import {
+  calculateAvgTemp,
+  calculateExtenssDate,
+  calculateFahrenheitMax,
+  calculateFahrenheitMin,
+} from '../main/Auxiliars.js';
 
 @customElement('main-element')
 export class WeatherMain extends LitElement {
@@ -48,6 +54,9 @@ export class WeatherMain extends LitElement {
     },
   ];
 
+  @state()
+  showFahrenheit = false;
+
   async connectedCallback(): Promise<void> {
     // eslint-disable-next-line wc/guard-super-call
     super.connectedCallback();
@@ -88,22 +97,34 @@ export class WeatherMain extends LitElement {
             ${this.previsoesArray.map(
               (previsaoItem, index) => html`
                 <div
-                  class="list-item ${index === 0
-                    ? 'highlight'
-                    : 'align-inline'}"
+                  class="list-item ${
+                    index === 0 ? 'highlight' : 'align-inline'
+                  }"
                 >
-                  <p>${previsaoItem.date}</p>
+                  <p>${calculateExtenssDate(previsaoItem)}</p>
                   <p>
                     <img
                       src="${this.symbols[0][previsaoItem.symbol]}"
                       alt="Weather Symbol"
                     />
                   </p>
-
+                  <p>Average: ${calculateAvgTemp(previsaoItem).toFixed(1)}ºC</p>
                   <p>
-                    Temp: ${previsaoItem.minTemp}ºC - ${previsaoItem.maxTemp}ºC
-                  </p>
-                  <p></p>
+                  <div class="temperature-conversion">
+                 
+                    <button @click=${() => this.toggleTempetature()}>  ${
+                this.showFahrenheit
+                  ? `Fahrenheit: ${calculateFahrenheitMin(previsaoItem).toFixed(
+                      1
+                    )}ºF - ${calculateFahrenheitMax(previsaoItem).toFixed(1)}ºF`
+                  : `Celsius: ${previsaoItem.minTemp.toFixed(
+                      1
+                    )}ºC - ${previsaoItem.maxTemp.toFixed(1)}ºC`
+              }</button>
+                    </div>
+                    </p>
+                
+                
                 </div>
               `
             )}
@@ -111,5 +132,9 @@ export class WeatherMain extends LitElement {
         </div>
       </div>
     `;
+  }
+
+  private toggleTempetature() {
+    this.showFahrenheit = !this.showFahrenheit;
   }
 }
