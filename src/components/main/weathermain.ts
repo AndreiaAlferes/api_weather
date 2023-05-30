@@ -1,3 +1,4 @@
+/* eslint-disable no-return-assign */
 /* eslint-disable no-shadow */
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
@@ -5,6 +6,7 @@ import { style } from '../main/stylemain.js';
 import { previsao } from '../../model/previsao.js';
 import {
   calculateAvgTemp,
+  calculateAvgTempFar,
   calculateExtenssDate,
   calculateFahrenheitMax,
   calculateFahrenheitMin,
@@ -57,10 +59,40 @@ export class WeatherMain extends LitElement {
   @state()
   showFahrenheit = false;
 
-  async connectedCallback(): Promise<void> {
-    // eslint-disable-next-line wc/guard-super-call
-    super.connectedCallback();
+  @state()
+  showAvarageFar = false;
 
+  @state()
+  searchQuery = '';
+
+  @state()
+  searchResult = '';
+
+  handleInputChange(event: Event) {
+    const inputEvent = event.target as HTMLInputElement;
+    this.searchQuery = inputEvent.value;
+  }
+
+  async searchLocation(location: any) {
+    const url = `https://foreca-weather.p.rapidapi.com/location/search/${location}?lang=en`;
+    const options = {
+      method: 'GET',
+      headers: {
+        'X-RapidAPI-Key': 'b4d1bb0b53msh96f2192eac136cdp124aadjsnf2f312ca4fdb',
+        'X-RapidAPI-Host': 'foreca-weather.p.rapidapi.com',
+      },
+    };
+
+    try {
+      const response = await fetch(url, options);
+      const result = await response.json();
+      this.searchWeather(result.locations[0].id);
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  async searchWeather(idLocation: number) {
     const options = {
       method: 'GET',
       headers: {
@@ -69,29 +101,39 @@ export class WeatherMain extends LitElement {
       },
     };
     try {
+      console.log(this.searchQuery);
       const response = await fetch(
-        'https://foreca-weather.p.rapidapi.com/forecast/daily/102643743?alt=0&tempunit=C&windunit=MS&periods=8&dataset=standard',
+        `https://foreca-weather.p.rapidapi.com/forecast/daily/${idLocation}?alt=0&tempunit=C&windunit=MS&periods=8&dataset=full`,
         options
       );
 
       const data = await response.json();
       this.previsoesArray = data.forecast;
+      console.log(data.forecast);
       console.log(this.previsoesArray);
     } catch (err) {
       console.log(err);
       console.log('erro ao fazer a chamada à API');
     }
+    this.searchResult = this.searchQuery;
+    this.searchQuery = '';
   }
 
   render() {
-    // // eslint-disable-next-line arrow-body-style
-    // const calculateAvgTemp = (previsaoItem: previsao): number => {
-    //   return (previsaoItem.minTemp + previsaoItem.maxTemp) / 2;
-    // };
-
     return html`
       <div class="main">
-        <h1>TEMPERATURA EM LISBOA</h1>
+        <h1>Temperature for ${this.searchResult}</h1>
+        <div>
+          <input
+            type="text"
+            placeholder="Search for a city..."
+            .value=${this.searchQuery}
+            @input=${this.handleInputChange}
+          />
+          <button @click=${() => this.searchLocation(this.searchQuery)}>
+            Search
+          </button>
+        </div>
         <div class="list-container">
           <ul>
             ${this.previsoesArray.map(
@@ -102,16 +144,36 @@ export class WeatherMain extends LitElement {
                   }"
                 >
                   <p>${calculateExtenssDate(previsaoItem)}</p>
+                  
+                  <p>${
+                    previsaoItem.uvIndex !== undefined
+                      ? html`<p>UV Index:${previsaoItem.uvIndex}</p>`
+                      : ''
+                  }</p>
+                  
                   <p>
                     <img
                       src="${this.symbols[0][previsaoItem.symbol]}"
                       alt="Weather Symbol"
                     />
                   </p>
-                  <p>Average: ${calculateAvgTemp(previsaoItem).toFixed(1)}ºC</p>
+                 
+                  <p>
+                  <div class="avarage-conversion">
+                    <button @click =${() => this.toggleAvgTemp()}>${
+                this.showAvarageFar
+                  ? `Fahrenheit Average: ${calculateAvgTempFar(
+                      previsaoItem
+                    ).toFixed(1)}ºF`
+                  : `Celsius Average: ${calculateAvgTemp(previsaoItem).toFixed(
+                      1
+                    )}ºC`
+              }</button>
+                  
+                </div>
+              </p>
                   <p>
                   <div class="temperature-conversion">
-                 
                     <button @click=${() => this.toggleTempetature()}>  ${
                 this.showFahrenheit
                   ? `Fahrenheit: ${calculateFahrenheitMin(previsaoItem).toFixed(
@@ -123,8 +185,7 @@ export class WeatherMain extends LitElement {
               }</button>
                     </div>
                     </p>
-                
-                
+
                 </div>
               `
             )}
@@ -136,5 +197,9 @@ export class WeatherMain extends LitElement {
 
   private toggleTempetature() {
     this.showFahrenheit = !this.showFahrenheit;
+  }
+
+  private toggleAvgTemp() {
+    this.showAvarageFar = !this.showAvarageFar;
   }
 }

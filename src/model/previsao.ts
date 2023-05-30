@@ -6,4 +6,5 @@ export interface previsao {
   precipAccum: number;
   symbol: string;
   winDir: number;
+  uvIndex: number;
 }

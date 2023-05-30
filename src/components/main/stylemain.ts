@@ -46,5 +46,25 @@ export const style = [
       display: inline-block;
       align-items: center;
     }
+
+    .green {
+      color: green;
+    }
+
+    .yellow {
+      color: yellow;
+    }
+
+    .orange {
+      color: orange;
+    }
+
+    .red {
+      color: red;
+    }
+
+    .violet {
+      color: violet;
+    }
   `,
 ];
