@@ -51,19 +51,3 @@ export function calculateExtenssDate(previsaoItem: previsao) {
 
   return `${weekly}, ${day} ${month} of ${year}`;
 }
-
-export function getColorUvIndex(uvIndex: number): string {
-  if (uvIndex < 3) {
-    return 'green';
-  }
-  if (uvIndex < 6) {
-    return 'yellow';
-  }
-  if (uvIndex < 8) {
-    return 'orange';
-  }
-  if (uvIndex < 11) {
-    return 'red';
-  }
-  return 'violet';
-}

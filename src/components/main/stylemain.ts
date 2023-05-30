@@ -17,6 +17,10 @@ export const style = [
       margin-top: 20px;
     }
 
+    .index p {
+      font-size: 1.5rem;
+    }
+
     .list-container {
       display: flex;
       justify-content: center;
@@ -36,7 +40,7 @@ export const style = [
       margin: auto;
       width: 40%;
       margin-bottom: 2rem;
-      background-color: #94a7e2;
+      background-color: #d9deed;
       font-weight: bold;
       align-items: center;
       flex-wrap: wrap-reverse;
@@ -47,24 +51,24 @@ export const style = [
       align-items: center;
     }
 
-    .green {
-      color: green;
+    .low-uv {
+      color: #59d61a;
     }
 
-    .yellow {
-      color: yellow;
+    .moderate-uv {
+      color: rgb(207 185 30);
     }
 
-    .orange {
-      color: orange;
+    .high-uv {
+      color: #ef8031;
     }
 
-    .red {
-      color: red;
+    .very-high-uv {
+      color: #f6420b;
     }
 
-    .violet {
-      color: violet;
+    .extreme-uv {
+      color: #70088a;
     }
   `,
 ];

@@ -1,5 +1,3 @@
-/* eslint-disable no-return-assign */
-/* eslint-disable no-shadow */
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { style } from '../main/stylemain.js';
@@ -71,6 +69,23 @@ export class WeatherMain extends LitElement {
   handleInputChange(event: Event) {
     const inputEvent = event.target as HTMLInputElement;
     this.searchQuery = inputEvent.value;
+  }
+
+  // eslint-disable-next-line class-methods-use-this
+  uvIndexClass(uvIndex: number): string {
+    if (uvIndex <= 2) {
+      return 'low-uv';
+    }
+    if (uvIndex <= 5) {
+      return 'moderate-uv';
+    }
+    if (uvIndex <= 7) {
+      return 'high-uv';
+    }
+    if (uvIndex <= 10) {
+      return 'very-high-uv';
+    }
+    return 'extreme-uv';
   }
 
   async searchLocation(location: any) {
@@ -147,7 +162,11 @@ export class WeatherMain extends LitElement {
                   
                   <p>${
                     previsaoItem.uvIndex !== undefined
-                      ? html`<p>UV Index:${previsaoItem.uvIndex}</p>`
+                      ? html`<p
+                          class=${this.uvIndexClass(previsaoItem.uvIndex)}
+                        >
+                          UV Index:${previsaoItem.uvIndex}
+                        </p>`
                       : ''
                   }</p>
                   
