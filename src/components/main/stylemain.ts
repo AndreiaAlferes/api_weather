@@ -17,8 +17,17 @@ export const style = [
       margin-top: 20px;
     }
 
+    .title h1 {
+      font-size: 4rem;
+    }
+
     .index p {
       font-size: 1.5rem;
+    }
+
+    .error-message {
+      color: red;
+      margin: left;
     }
 
     .list-container {

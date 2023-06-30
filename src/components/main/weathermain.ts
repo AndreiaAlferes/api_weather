@@ -1,3 +1,4 @@
+/* eslint-disable class-methods-use-this */
 import { LitElement, html } from 'lit';
 import { customElement, property, state } from 'lit/decorators.js';
 import { style } from '../main/stylemain.js';
@@ -66,12 +67,14 @@ export class WeatherMain extends LitElement {
   @state()
   searchResult = '';
 
+  @state()
+  error = '';
+
   handleInputChange(event: Event) {
     const inputEvent = event.target as HTMLInputElement;
     this.searchQuery = inputEvent.value;
   }
 
-  // eslint-disable-next-line class-methods-use-this
   uvIndexClass(uvIndex: number): string {
     if (uvIndex <= 2) {
       return 'low-uv';
@@ -101,9 +104,15 @@ export class WeatherMain extends LitElement {
     try {
       const response = await fetch(url, options);
       const result = await response.json();
-      this.searchWeather(result.locations[0].id);
-    } catch (error) {
-      console.error(error);
+      console.log(Object.keys(result).length);
+      if (Object.keys(result).length >= 1) {
+        this.error = 'Search not found';
+      } else {
+        this.searchWeather(result.locations[0].id);
+      }
+      console.log(this.searchWeather(result.locations[0].id));
+    } catch (e) {
+      console.log(e);
     }
   }
 
@@ -126,8 +135,8 @@ export class WeatherMain extends LitElement {
       this.previsoesArray = data.forecast;
       console.log(data.forecast);
       console.log(this.previsoesArray);
-    } catch (err) {
-      console.log(err);
+    } catch (e) {
+      console.log(e);
       console.log('erro ao fazer a chamada à API');
     }
     this.searchResult = this.searchQuery;
@@ -137,7 +146,7 @@ export class WeatherMain extends LitElement {
   render() {
     return html`
       <div class="main">
-        <h1>Temperature for ${this.searchResult}</h1>
+        <h1 class="title">Temperature for ${this.searchResult}</h1>
         <div>
           <input
             type="text"
@@ -149,6 +158,12 @@ export class WeatherMain extends LitElement {
             Search
           </button>
         </div>
+        <div>
+          <p class="message ${this.error ? 'error-message' : ''}">
+            ${this.error ? html`${this.error}` : ''}
+          </p>
+        </div>
+
         <div class="list-container">
           <ul>
             ${this.previsoesArray.map(
@@ -158,9 +173,9 @@ export class WeatherMain extends LitElement {
                     index === 0 ? 'highlight' : 'align-inline'
                   }"
                 >
-                  <p>${calculateExtenssDate(previsaoItem)}</p>
+                  <p class="date">${calculateExtenssDate(previsaoItem)}</p>
                   
-                  <p>${
+                  <p class="index">${
                     previsaoItem.uvIndex !== undefined
                       ? html`<p
                           class=${this.uvIndexClass(previsaoItem.uvIndex)}
